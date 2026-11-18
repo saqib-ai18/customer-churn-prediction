@@ -1,5 +1,6 @@
 import os
 import json
+import streamlit as st
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -15,8 +16,13 @@ BASE_URL = "https://integrate.api.nvidia.com/v1"
 
 
 def get_client():
-
     api_key = os.getenv("NVIDIA_API_KEY")
+
+    if not api_key:
+        try:
+            api_key = st.secrets["NVIDIA_API_KEY"]
+        except Exception:
+            api_key = None
 
     if not api_key:
         raise ValueError("NVIDIA_API_KEY is not configured.")
